@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 480" font-family="-apple-system,Helvetica,Arial,sans-serif">
+  <style>
+    .layer-label { font: 700 14px inherit; fill: #14315C; }
+    .sub { font: 400 11px inherit; fill: #44546a; }
+    .step { font: 700 12px inherit; fill: #ffffff; }
+  </style>
+  <rect width="700" height="480" fill="#ffffff"/>
+  <text x="350" y="26" text-anchor="middle" class="layer-label" font-size="15">Defense in Depth — traffic must clear every layer</text>
+
+  <!-- concentric rounded rects, outer = first layer traffic hits -->
+  <rect x="30" y="50" width="640" height="400" rx="16" fill="#fdeeee" stroke="#a4262c" stroke-width="1.5"/>
+  <circle cx="60" cy="70" r="12" fill="#a4262c"/>
+  <text x="60" y="75" text-anchor="middle" class="step">1</text>
+  <text x="85" y="76" class="layer-label" fill="#a4262c">Cloud WAF</text>
+  <text x="220" y="76" class="sub">filters malicious traffic before it reaches anything else</text>
+
+  <rect x="70" y="105" width="560" height="315" rx="16" fill="#fff8e6" stroke="#906800" stroke-width="1.5"/>
+  <circle cx="100" cy="125" r="12" fill="#906800"/>
+  <text x="100" y="130" text-anchor="middle" class="step">2</text>
+  <text x="125" y="131" class="layer-label" fill="#906800">Sophos Firewall Pair</text>
+  <text x="300" y="131" class="sub">HA pair — no single point of failure</text>
+
+  <rect x="110" y="160" width="480" height="230" rx="16" fill="#e7f0fd" stroke="#1a52ad" stroke-width="1.5"/>
+  <circle cx="140" cy="180" r="12" fill="#1a52ad"/>
+  <text x="140" y="185" text-anchor="middle" class="step">3</text>
+  <text x="165" y="186" class="layer-label" fill="#1a52ad">Core / Stacked Switches</text>
+  <text x="165" y="204" class="sub">directs traffic to the correct VLAN — nothing crosses zones by default</text>
+
+  <rect x="150" y="220" width="400" height="140" rx="16" fill="#e6f6ec" stroke="#1b7a43" stroke-width="1.5"/>
+  <circle cx="180" cy="240" r="12" fill="#1b7a43"/>
+  <text x="180" y="245" text-anchor="middle" class="step">4</text>
+  <text x="205" y="246" class="layer-label" fill="#1b7a43">Segmented VLANs</text>
+
+  <g class="sub" fill="#1b7a43">
+    <rect x="165" y="265" width="100" height="26" rx="4" fill="#ffffff" stroke="#1b7a43"/>
+    <text x="215" y="282" text-anchor="middle">Servers</text>
+    <rect x="275" y="265" width="100" height="26" rx="4" fill="#ffffff" stroke="#1b7a43"/>
+    <text x="325" y="282" text-anchor="middle">Corp Wired</text>
+    <rect x="385" y="265" width="100" height="26" rx="4" fill="#ffffff" stroke="#1b7a43"/>
+    <text x="435" y="282" text-anchor="middle">Corp WiFi</text>
+    <rect x="165" y="300" width="100" height="26" rx="4" fill="#fdeeee" stroke="#a4262c"/>
+    <text x="215" y="317" text-anchor="middle" fill="#a4262c">Guest WiFi</text>
+    <rect x="275" y="300" width="100" height="26" rx="4" fill="#ffffff" stroke="#1b7a43"/>
+    <text x="325" y="317" text-anchor="middle">Printers</text>
+  </g>
+
+  <text x="350" y="345" text-anchor="middle" class="sub">Each VLAN only reaches what it needs — least privilege by design.</text>
+
+  <!-- key -->
+  <text x="350" y="435" text-anchor="middle" class="sub" font-weight="700">If one layer is bypassed, the next one is still there.</text>
+  <text x="350" y="455" text-anchor="middle" class="sub">Traffic path: Internet → WAF → Firewall Pair → Core Switch → target VLAN</text>
+</svg>

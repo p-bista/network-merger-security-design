@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 420" font-family="-apple-system,Helvetica,Arial,sans-serif">
+  <style>
+    .title { font: 700 15px inherit; fill: #14315C; }
+    .label { font: 700 13px inherit; }
+    .sub { font: 400 11.5px inherit; fill: #44546a; }
+  </style>
+  <rect width="780" height="420" fill="#ffffff"/>
+
+  <!-- Option A -->
+  <rect x="20" y="20" width="340" height="190" rx="10" fill="#fdeeee" stroke="#a4262c" stroke-width="1.5"/>
+  <text x="40" y="46" class="label" fill="#a4262c">On-Premises Only</text>
+  <text x="40" y="70" class="sub">+ No subscription costs</text>
+  <text x="40" y="88" class="sub">+ Full hardware control</text>
+  <text x="40" y="112" class="sub">− New hardware purchase exceeds</text>
+  <text x="40" y="128" class="sub">&#160;&#160;$50,000 for real redundancy</text>
+  <text x="40" y="152" class="sub">− Still doesn't close the MFA,</text>
+  <text x="40" y="168" class="sub">&#160;&#160;WAF, or logging gaps</text>
+
+  <!-- Option B -->
+  <rect x="420" y="20" width="340" height="190" rx="10" fill="#e7f0fd" stroke="#1a52ad" stroke-width="1.5"/>
+  <text x="440" y="46" class="label" fill="#1a52ad">Cloud-Augmented</text>
+  <text x="440" y="70" class="sub">+ Predictable costs fit the fixed</text>
+  <text x="440" y="86" class="sub">&#160;&#160;first-year budget</text>
+  <text x="440" y="106" class="sub">+ Built-in backup, room to grow</text>
+  <text x="440" y="130" class="sub">− Ongoing monthly cost</text>
+  <text x="440" y="150" class="sub">− Depends on internet connectivity</text>
+  <text x="440" y="166" class="sub">&#160;&#160;and cloud provider uptime</text>
+
+  <!-- arrows down to recommendation -->
+  <line x1="190" y1="210" x2="330" y2="270" stroke="#14315C" stroke-width="2" marker-end="url(#arrow2)"/>
+  <line x1="590" y1="210" x2="450" y2="270" stroke="#14315C" stroke-width="2" marker-end="url(#arrow2)"/>
+
+  <!-- Recommendation -->
+  <rect x="190" y="280" width="400" height="120" rx="10" fill="#e6f6ec" stroke="#1b7a43" stroke-width="2"/>
+  <text x="390" y="306" text-anchor="middle" class="label" fill="#1b7a43" font-size="15">Recommended: Hybrid</text>
+  <text x="390" y="328" text-anchor="middle" class="sub">Keep servers + already-owned Sophos</text>
+  <text x="390" y="344" text-anchor="middle" class="sub">firewalls on-premises</text>
+  <text x="390" y="366" text-anchor="middle" class="sub">Layer cloud services (WAF, ZTNA, MFA,</text>
+  <text x="390" y="382" text-anchor="middle" class="sub">DNS, backup, SIEM) on top — all within $50,000</text>
+
+  <defs>
+    <marker id="arrow2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#14315C"/>
+    </marker>
+  </defs>
+</svg>

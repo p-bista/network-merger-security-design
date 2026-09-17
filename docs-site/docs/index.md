@@ -21,6 +21,15 @@ This project walks through my full process: analyzing the risk and vulnerability
 Every diagram below is interactive-in-spirit — the sequence diagrams in particular are meant to show *how* traffic actually behaves, not just where the boxes sit. No deep networking background required; terms are explained as they come up.
 :::
 
+```mermaid
+flowchart LR
+    A[Assess risk &amp; vulnerabilities<br/>NIST SP 800-30] --> B[Design architecture<br/>Zero Trust + Defense in Depth]
+    B --> C[Map every component<br/>OSI &amp; TCP/IP models]
+    C --> D[Justify the budget<br/>fixed $50,000]
+    D --> E[Map to compliance<br/>PCI-DSS &amp; GLBA]
+    E --> F[Final recommendation]
+```
+
 ## Skills Demonstrated
 
 | | |
@@ -33,6 +42,19 @@ Every diagram below is interactive-in-spirit — the sequence diagrams in partic
 ## The Business Challenge
 
 Company A is a U.S. financial services company — checking accounts, bank cards, investment products — which means it holds sensitive customer PII and falls under GLBA. Company B is a smaller company offering specialized software to medical providers and accepting credit card payments, which brings PCI-DSS into scope. Company B has no dedicated security function and relies on third-party support. The merged executives want to move toward the cloud for scalability and redundancy, apply zero trust principles, and stay within a $50,000 first-year budget for cloud-based security services.
+
+```mermaid
+flowchart TD
+    A["Company A<br/>financial services · GLBA<br/>single points of failure"] --> M((Merger))
+    B["Company B<br/>healthcare-adjacent SaaS · PCI-DSS<br/>no MFA, critical CVEs"] --> M
+    M --> C{"Executive constraints"}
+    C --> C1["Fixed $50,000<br/>first-year budget"]
+    C --> C2["Zero trust<br/>principles"]
+    C --> C3["Cloud scalability<br/>&amp; redundancy"]
+    C1 --> R["Unified, compliant<br/>merged network"]
+    C2 --> R
+    C3 --> R
+```
 
 ## Company A's Network — Before
 
@@ -92,6 +114,42 @@ Telnet, FTP, and RDP are all active, backed up by specific scan findings: an exp
 ### Company B — No MFA, Anywhere
 Compounded by the exposed RDP port and the internet-reachable PostgreSQL admin panel — MFA is exactly the control that would blunt both.
 
+**Attack path — Company A's open ports:**
+
+```mermaid
+sequenceDiagram
+    actor Attacker
+    participant FW as Company A Firewall<br/>(ports 21-90, 3389 open)
+    participant Comp as Computer VLAN<br/>(local admin everywhere)
+    participant Srv as Servers VLAN<br/>(Exchange, SharePoint, File)
+
+    Attacker->>FW: Scan for open ports
+    FW-->>Attacker: FTP (21) and RDP (3389) respond
+    Attacker->>FW: Brute-force RDP / sniff plaintext FTP creds
+    FW->>Comp: One valid credential is enough to get in
+    Note over Comp: Every account already has local admin —<br/>no extra privilege escalation needed
+    Comp->>Srv: Direct network path to Servers VLAN
+    Srv-->>Attacker: Access to email, files, application data
+```
+
+**Attack path — Company B's legacy protocols:**
+
+```mermaid
+sequenceDiagram
+    actor Attacker
+    participant Router as Consumer-Grade<br/>Home Router
+    participant Svc as Exposed Services<br/>(Telnet, rlogin, rsh, PostgreSQL admin panel)
+    participant Srv as Servers (Virtualized)<br/>~20 servers, payment data
+
+    Attacker->>Router: Connect — no enterprise-grade filtering
+    Router->>Svc: Forward to internet-facing services
+    Svc-->>Attacker: rlogin allows password-less access
+    Svc-->>Attacker: rsh transmits credentials in plaintext
+    Note over Attacker,Svc: No MFA anywhere to stop this —<br/>one exposed protocol is enough
+    Attacker->>Srv: Authenticate directly, no second factor
+    Srv-->>Attacker: Access to payment card data — PCI-DSS violation
+```
+
 ## Impact, Risk & Likelihood
 
 | Vulnerability | Risk | Likelihood | What Could Happen |
@@ -100,6 +158,8 @@ Compounded by the exposed RDP port and the internet-reachable PostgreSQL admin p
 | Company A — universal admin rights | Moderate | Moderate | Less severe on its own — an attacker needs an initial foothold, usually phishing — but once in, admin rights let them disable security tools and pivot toward the servers quickly. |
 | Company B — legacy remote-access protocols | High | High | Actively reachable right now, each with a documented scan finding. Plaintext credentials mean anyone on the internal network can potentially intercept them. |
 | Company B — no MFA | High | High | Compounds the exposed RDP port and the exposed database admin panel. One leaked password is enough — and it puts Company B out of line with PCI-DSS. |
+
+![Risk and likelihood matrix](./diagrams/risk-matrix.svg)
 
 ## The Proposed Merged Network
 
@@ -171,6 +231,17 @@ Centralizes logs from both companies' firewalls, MFA activity, and servers — v
 | Cloud SIEM / centralized log management | Add | $5,000 |
 | Implementation labor / contingency | — | $13,000 |
 | **Total** | | **$50,000** |
+
+```mermaid
+pie showData title Budget Allocation ($50,000)
+    "ZTNA / VPN Gateway" : 16000
+    "Implementation / Contingency" : 13000
+    "Cloud WAF" : 5000
+    "Cloud SIEM" : 5000
+    "Cisco Umbrella DNS" : 4000
+    "Cloud Backup & DR" : 4000
+    "Duo MFA" : 3000
+```
 
 ## Remote Access — Before ⚠️ Risky
 
@@ -282,6 +353,8 @@ Company A handles financial accounts, which makes payment-related social enginee
 ### Defense in Depth
 The design layers more than one control instead of relying on any single one. Traffic hits the cloud WAF first, then the firewall pair, then gets split by VLAN — if one layer is bypassed, the next is still there. The diagram makes this visible: Cloud WAF → Firewall Pair → Core Switch → separate VLANs.
 
+![Defense in depth layers diagram](./diagrams/defense-in-depth-layers.svg)
+
 ### Zero Trust / Least Privilege Through Segmentation
 Instead of trusting everything inside the network by default, traffic is split by purpose — Servers, Corp Wired, Corp WiFi, Guest WiFi, and Printers each get their own VLAN, with Guest WiFi fully isolated. Remote employees no longer connect through an open RDP port; they go through the ZTNA gateway, which verifies identity and grants access to only what's needed — the core idea behind zero trust.
 
@@ -310,6 +383,24 @@ Instead of trusting everything inside the network by default, traffic is split b
 
 **Mitigation:** automated cloud security posture monitoring, infrastructure templated consistently every time, and least-privilege access for every cloud service.
 
+```mermaid
+sequenceDiagram
+    actor Engineer
+    participant Cloud as Cloud Service<br/>(WAF / Backup / SIEM config)
+    participant CSPM as Cloud Security<br/>Posture Monitoring
+    participant SecTeam as Security Team
+
+    Engineer->>Cloud: Deploy or update configuration
+    CSPM->>Cloud: Continuously scan for misconfigurations
+    alt Misconfiguration found<br/>(e.g. open bucket, over-permissioned account)
+        CSPM->>SecTeam: Alert immediately
+        SecTeam->>Cloud: Remediate configuration
+        Cloud-->>SecTeam: Confirm fixed
+    else Configuration is compliant
+        CSPM-->>Engineer: No action needed
+    end
+```
+
 ### Phishing During the Merger
 **Risk:** unfamiliarity between the two newly merged workforces makes impersonation easier — especially around payment and account-change requests, which matters given Company A's financial focus. (See the sequence diagram above.)
 
@@ -318,6 +409,8 @@ Instead of trusting everything inside the network by default, traffic is split b
 **Mitigation:** Mimecast extended company-wide, hardware security keys for finance/executive accounts, merger-specific phishing training, and mandatory phone verification before any wire transfer or account-change request.
 
 ## Recommendation & Cost-Benefit Summary
+
+![On-premises vs cloud-augmented recommendation comparison](./diagrams/recommendation-comparison.svg)
 
 | | |
 |---|---|
