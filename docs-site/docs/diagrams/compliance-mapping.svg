@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 460" font-family="-apple-system,Helvetica,Arial,sans-serif">
+  <style>
+    .col-title { font: 700 16px inherit; fill: #14315C; }
+    .label { font: 700 12.5px inherit; fill: #14315C; }
+    .sub { font: 400 11.5px inherit; fill: #44546a; }
+    .req { font: 700 12px inherit; fill: #ffffff; }
+  </style>
+  <rect width="980" height="460" fill="#ffffff"/>
+
+  <text x="180" y="30" text-anchor="middle" class="col-title">Regulation requires</text>
+  <text x="500" y="30" text-anchor="middle" class="col-title">Design control</text>
+  <text x="810" y="30" text-anchor="middle" class="col-title">Who it applies to</text>
+
+  <!-- PCI-DSS row group -->
+  <rect x="20" y="50" width="320" height="150" rx="8" fill="#e7f0fd" stroke="#1a52ad" stroke-width="1.5"/>
+  <text x="40" y="72" class="req" fill="#1a52ad">PCI-DSS v4.0.1</text>
+  <text x="40" y="94" class="sub">Segment cardholder data</text>
+  <text x="40" y="110" class="sub">environment from general traffic</text>
+  <text x="40" y="130" class="sub">Require MFA for remote &amp;</text>
+  <text x="40" y="146" class="sub">admin access</text>
+  <text x="40" y="166" class="sub">No plaintext auth protocols</text>
+  <text x="40" y="182" class="sub">(Telnet, rsh, rlogin)</text>
+
+  <rect x="360" y="50" width="280" height="150" rx="8" fill="#ffffff" stroke="#14315C" stroke-width="1.5"/>
+  <text x="380" y="72" class="label">Servers VLAN isolation</text>
+  <text x="380" y="90" class="sub">shrinks PCI-DSS scope</text>
+  <text x="380" y="114" class="label">Duo MFA</text>
+  <text x="380" y="132" class="sub">on all remote + admin access</text>
+  <text x="380" y="156" class="label">ZTNA encrypted tunnel</text>
+  <text x="380" y="174" class="sub">replaces Telnet / rsh / rlogin</text>
+
+  <rect x="680" y="50" width="280" height="150" rx="8" fill="#e6f6ec" stroke="#1b7a43" stroke-width="1.5"/>
+  <text x="700" y="76" class="label">Company B</text>
+  <text x="700" y="96" class="sub">accepts credit card payments →</text>
+  <text x="700" y="112" class="sub">merged network is in PCI-DSS scope</text>
+
+  <!-- connecting lines -->
+  <line x1="340" y1="90" x2="360" y2="90" stroke="#14315C" stroke-width="1.5"/>
+  <line x1="340" y1="130" x2="360" y2="130" stroke="#14315C" stroke-width="1.5"/>
+  <line x1="340" y1="170" x2="360" y2="170" stroke="#14315C" stroke-width="1.5"/>
+  <line x1="640" y1="125" x2="680" y2="125" stroke="#14315C" stroke-width="1.5"/>
+
+  <!-- GLBA row group -->
+  <rect x="20" y="230" width="320" height="180" rx="8" fill="#fdeeee" stroke="#a4262c" stroke-width="1.5"/>
+  <text x="40" y="252" class="req" fill="#a4262c">GLBA Safeguards Rule</text>
+  <text x="40" y="274" class="sub">(16 C.F.R. Part 314)</text>
+  <text x="40" y="296" class="sub">Written security plan with</text>
+  <text x="40" y="312" class="sub">real technical protections</text>
+  <text x="40" y="334" class="sub">Monitoring / logging of</text>
+  <text x="40" y="350" class="sub">access to customer data</text>
+  <text x="40" y="372" class="sub">Data availability / continuity</text>
+  <text x="40" y="388" class="sub">safeguards</text>
+
+  <rect x="360" y="230" width="280" height="180" rx="8" fill="#ffffff" stroke="#14315C" stroke-width="1.5"/>
+  <text x="380" y="254" class="label">Segmented Servers VLAN +</text>
+  <text x="380" y="272" class="label">least-privilege ZTNA access</text>
+  <text x="380" y="290" class="sub">= documented technical safeguard</text>
+  <text x="380" y="316" class="label">Cloud SIEM</text>
+  <text x="380" y="334" class="sub">centralized logging across both</text>
+  <text x="380" y="350" class="sub">companies' firewalls, MFA, servers</text>
+  <text x="380" y="374" class="label">Cloud backup &amp; DR</text>
+  <text x="380" y="392" class="sub">off-site, first time for either company</text>
+
+  <rect x="680" y="230" width="280" height="180" rx="8" fill="#e6f6ec" stroke="#1b7a43" stroke-width="1.5"/>
+  <text x="700" y="256" class="label">Company A</text>
+  <text x="700" y="276" class="sub">financial services — holds account</text>
+  <text x="700" y="292" class="sub">numbers, SSNs, other customer PII →</text>
+  <text x="700" y="308" class="sub">falls under GLBA</text>
+
+  <line x1="340" y1="300" x2="360" y2="300" stroke="#14315C" stroke-width="1.5"/>
+  <line x1="340" y1="340" x2="360" y2="340" stroke="#14315C" stroke-width="1.5"/>
+  <line x1="340" y1="380" x2="360" y2="380" stroke="#14315C" stroke-width="1.5"/>
+  <line x1="640" y1="300" x2="680" y2="300" stroke="#14315C" stroke-width="1.5"/>
+
+  <!-- Legend -->
+  <rect x="20" y="420" width="940" height="30" fill="#fafbfc" stroke="none"/>
+  <text x="490" y="440" text-anchor="middle" class="sub">Reading left to right: each regulation's requirement → the specific design control that satisfies it → why that company is in scope.</text>
+</svg>

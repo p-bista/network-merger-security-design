@@ -1,10 +1,10 @@
-## Overview: 
-A short paragraph: two companies merging, one financial services, 
-one healthcare-adjacent SaaS — designing a secure, zero trust 
-network that passes PCI-DSS and GLBA requirements on a fixed budget.
+## Overview
+Secure network design and risk assessment for a fictional company merger — one financial services company, one healthcare-adjacent SaaS company — designing a zero trust network that passes PCI-DSS and GLBA requirements on a fixed $50,000 first-year budget.
+
+**📖 Read the full case study:** https://p-bista.github.io/network-merger-security-design/
 
 ## Scenario
-1–2 sentences on the fictional Company A / Company B setup.
+Company A (financial services, GLBA) and Company B (healthcare-adjacent SaaS, PCI-DSS) have merged and need a single secure network. Company A has redundancy and remote-access exposure problems; Company B has no MFA and several unpatched critical vulnerabilities. The combined executives want cloud scalability, zero trust, and a fixed $50,000 first-year budget.
 
 ## What's in this repo
 - Risk analysis & vulnerability assessment (Parts A–B)
@@ -15,10 +15,19 @@ network that passes PCI-DSS and GLBA requirements on a fixed budget.
 - Regulatory compliance mapping — PCI-DSS, GLBA (Part G)
 - Emerging threat analysis (Part H)
 - Final recommendation & cost-benefit summary (Part I)
-- ## Skills demonstrated
-Risk assessment · network segmentation · zero trust architecture · 
-regulatory compliance mapping · budget-constrained security design
+
+## Skills demonstrated
+Risk assessment · network segmentation · zero trust architecture · regulatory compliance mapping · budget-constrained security design
 
 ## Files
-- `report.docx` / `report.pdf` — full write-up
-- `diagrams/` — network topology and supporting diagrams
+- `Portfolio_Secure_Network_Design(1).html` — standalone single-file version of the case study
+- `docs-site/` — Docusaurus source for the published case study site (deployed via GitHub Actions to GitHub Pages)
+- `diagrams/` — network topology and supporting diagrams (also embedded in the docs site)
+
+## Developing the docs site locally
+```bash
+cd docs-site
+npm install
+npm start
+```
+Pushing to `main` (with changes under `docs-site/`) automatically rebuilds and redeploys the site via `.github/workflows/deploy-docs.yml`.
